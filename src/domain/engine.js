@@ -11,6 +11,7 @@ import {
 const MAX_SPEED = 90;
 const ACCELERATE_SPEED = 1;
 const BRAKE_SPEED = 1;
+const CAIRO_LENGTH = 24.75; // meters
 
 export const accelerate$ = new BehaviorSubject(false);
 
@@ -67,14 +68,29 @@ export function createPath$(road, distance$) {
   );
 }
 
-export function generateRandomPath() {
-  // const pSize = 1.524;
-  // const outerWidth = 23.6;
-  // const innerWidth = 17;
+export function calculateWheelsOffsets(offset) {
+  const pivotLength = 17;
+  const pairDistance = 1.524;
 
+  const halfPairDistance = pairDistance / 2;
+
+  const firstPivotPos = (CAIRO_LENGTH - pivotLength) / 2;
+  const secondPivotPos = CAIRO_LENGTH - firstPivotPos;
+
+  const cairoPivots = [
+    firstPivotPos - halfPairDistance,
+    firstPivotPos + halfPairDistance,
+    secondPivotPos - halfPairDistance,
+    secondPivotPos + halfPairDistance
+  ];
+
+  return cairoPivots.map(it => it + offset);
+}
+
+export function generateRandomPath() {
   let path = [];
 
-  for (let i = 0; i < 100; i += 1) {
+  for (let i = 0; i < 47; i += 1) {
     path.push({ distance: i * 0.0125, type: "junction" });
   }
 
