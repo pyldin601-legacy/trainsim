@@ -1,0 +1,28 @@
+{
+  "name": "trainsim",
+  "version": "0.0.1",
+  "description": "Train Simulator (Audio)",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest src/",
+    "start": "parcel public/index.html",
+    "build": "parcel build public/index.html"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/pldin601/trainsim.git"
+  },
+  "author": "Roman Lakhtadyr <roman.lakhtadyr@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/pldin601/trainsim/issues"
+  },
+  "homepage": "https://gitlab.com/pldin601/trainsim#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "rxjs": "^6.5.3"
+  }
+}
