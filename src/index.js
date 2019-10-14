@@ -9,6 +9,7 @@ import {
 } from "./domain/engine";
 import { mergeAll, share, map, mergeMap } from "rxjs/operators";
 import { of } from "rxjs";
+import { createWheels$ } from "./engine/train";
 
 const accelerateElement = document.getElementById("accelerate");
 const brakeElement = document.getElementById("brake");
@@ -33,16 +34,6 @@ distance$.subscribe(dst => {
   distanceElement.innerText = Number(dst).toFixed(3);
 });
 
-const wheels = calculateWheelsOffsets(0);
-console.log(wheels);
+const wheels$ = createWheels$(d$ => createPath$(generateRandomPath(), d$), distance$);
 
-const all$ = of(
-  wheels.map(d =>
-    createPath$(generateRandomPath(), distance$.pipe(map(dd => dd + d / 1000)))
-  )
-).pipe(
-  mergeMap(it => it),
-  mergeAll()
-);
-
-all$.subscribe(console.log);
+wheels$.subscribe(console.log);

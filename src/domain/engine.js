@@ -68,30 +68,12 @@ export function createPath$(road, distance$) {
   );
 }
 
-export function calculateWheelsOffsets(offset) {
-  const pivotLength = 17;
-  const pairDistance = 1.524;
-
-  const halfPairDistance = pairDistance / 2;
-
-  const firstPivotPos = (CAIRO_LENGTH - pivotLength) / 2;
-  const secondPivotPos = CAIRO_LENGTH - firstPivotPos;
-
-  const cairoPivots = [
-    firstPivotPos - halfPairDistance,
-    firstPivotPos + halfPairDistance,
-    secondPivotPos - halfPairDistance,
-    secondPivotPos + halfPairDistance
-  ];
-
-  return cairoPivots.map(it => it + offset);
-}
-
 export function generateRandomPath() {
   let path = [];
+  let offset = 0;
 
   for (let i = 0; i < 47; i += 1) {
-    path.push({ distance: i * 0.0125, type: "junction" });
+    path.push({ distance: offset + i * 0.05, type: "junction" });
   }
 
   return path;

@@ -23,6 +23,8 @@
     "prettier": "^1.18.2"
   },
   "dependencies": {
+    "lodash.flatten": "^4.4.0",
+    "lodash.range": "^3.2.0",
     "rxjs": "^6.5.3"
   }
 }
