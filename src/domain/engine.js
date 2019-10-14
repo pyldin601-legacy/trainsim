@@ -7,7 +7,6 @@ import {
   distinctUntilChanged,
   switchMap
 } from "rxjs/operators";
-import { partition } from "lodash";
 
 const MAX_SPEED = 90;
 const ACCELERATE_SPEED = 1;
@@ -23,7 +22,7 @@ export const frame$ = interval(0, animationFrameScheduler).pipe(
   map(([t1, t2]) => t2 - t1)
 );
 
-export function createSpeedObservable(accelerate$, brake$) {
+export function createSpeed$(accelerate$, brake$) {
   return frame$.pipe(
     withLatestFrom(accelerate$, brake$),
     scan((prevSpeed, [deltaTime, isAccelerating, isBraking]) => {
@@ -41,7 +40,7 @@ export function createSpeedObservable(accelerate$, brake$) {
   );
 }
 
-export function createDistanceObservable(speed$) {
+export function createDistance$(speed$) {
   return frame$.pipe(
     withLatestFrom(speed$),
     scan((distance, [deltaTime, speed]) => {
@@ -52,7 +51,7 @@ export function createDistanceObservable(speed$) {
   );
 }
 
-export function createPathObservable(road, distance$) {
+export function createPath$(road, distance$) {
   const _road = [...road];
 
   return distance$.pipe(
@@ -68,9 +67,16 @@ export function createPathObservable(road, distance$) {
   );
 }
 
-export const pathExample = [
-  { distance: 0.001, type: null },
-  { distance: 0.01, type: null },
-  { distance: 0.03, type: null },
-  { distance: 0.04, type: null }
-];
+export function generateRandomPath() {
+  // const pSize = 1.524;
+  // const outerWidth = 23.6;
+  // const innerWidth = 17;
+
+  let path = [];
+
+  for (let i = 0; i < 100; i += 1) {
+    path.push({ distance: i * 0.0125, type: "junction" });
+  }
+
+  return path;
+}

@@ -1,10 +1,10 @@
 import {
   accelerate$,
   brake$,
-  createDistanceObservable,
-  createPathObservable,
-  createSpeedObservable,
-  pathExample
+  createDistance$,
+  createPath$,
+  createSpeed$,
+  generateRandomPath
 } from "./domain/engine";
 import { share } from "rxjs/operators";
 
@@ -20,9 +20,9 @@ accelerateElement.addEventListener("mouseup", () => accelerate$.next(false));
 brakeElement.addEventListener("mousedown", () => brake$.next(true));
 brakeElement.addEventListener("mouseup", () => brake$.next(false));
 
-const speed$ = createSpeedObservable(accelerate$, brake$).pipe(share());
-const distance$ = createDistanceObservable(speed$).pipe(share());
-const road$ = createPathObservable(pathExample, distance$);
+const speed$ = createSpeed$(accelerate$, brake$).pipe(share());
+const distance$ = createDistance$(speed$).pipe(share());
+const road$ = createPath$(generateRandomPath(), distance$);
 
 speed$.subscribe(spd => {
   speedElement.innerText = Number(spd).toFixed(1);
