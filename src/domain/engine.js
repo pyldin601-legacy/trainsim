@@ -1,20 +1,17 @@
-import {
-  animationFrameScheduler,
-  BehaviorSubject,
-  interval,
-  Observable
-} from "rxjs";
+import { animationFrameScheduler, BehaviorSubject, interval } from "rxjs";
 import {
   map,
   pairwise,
   scan,
   withLatestFrom,
-  distinctUntilChanged
+  distinctUntilChanged,
+  switchMap
 } from "rxjs/operators";
+import { partition } from "lodash";
 
 const MAX_SPEED = 90;
 const ACCELERATE_SPEED = 1;
-const BRAKE_SPEED = 0.5;
+const BRAKE_SPEED = 1;
 
 export const accelerate$ = new BehaviorSubject(false);
 
@@ -55,17 +52,25 @@ export function createDistanceObservable(speed$) {
   );
 }
 
-export function createRoadObservable(road) {
-  const clonedRoad = [...road];
+export function createPathObservable(road, distance$) {
+  const _road = [...road];
 
-  return new Observable(observer => {
-    const item = clonedRoad.shift();
-  });
+  return distance$.pipe(
+    switchMap(currDistance => {
+      let roadObjects = [];
+
+      while (_road.length > 0 && _road[0].distance <= currDistance) {
+        roadObjects.push(_road.shift());
+      }
+
+      return roadObjects;
+    })
+  );
 }
 
-const roadExample = [
-  { distance: 0, type: null },
-  { distance: 10, type: null },
-  { distance: 30, type: null },
-  { distance: 40, type: null }
+export const pathExample = [
+  { distance: 0.001, type: null },
+  { distance: 0.01, type: null },
+  { distance: 0.03, type: null },
+  { distance: 0.04, type: null }
 ];
