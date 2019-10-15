@@ -52,29 +52,3 @@ export function createDistance$(speed$) {
   );
 }
 
-export function createPath$(road, distance$) {
-  const _road = [...road];
-
-  return distance$.pipe(
-    switchMap(currDistance => {
-      let roadObjects = [];
-
-      while (_road.length > 0 && _road[0].distance <= currDistance) {
-        roadObjects.push(_road.shift());
-      }
-
-      return roadObjects;
-    })
-  );
-}
-
-export function generateRandomPath() {
-  let path = [];
-  let offset = 0;
-
-  for (let i = 0; i < 47; i += 1) {
-    path.push({ distance: offset + i * 0.05, type: "junction" });
-  }
-
-  return path;
-}

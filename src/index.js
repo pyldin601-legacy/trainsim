@@ -1,15 +1,12 @@
 import {
   accelerate$,
   brake$,
-  calculateWheelsOffsets,
   createDistance$,
-  createPath$,
-  createSpeed$,
-  generateRandomPath
+  createSpeed$
 } from "./domain/engine";
-import { mergeAll, share, map, mergeMap } from "rxjs/operators";
-import { of } from "rxjs";
-import { createWheels$ } from "./engine/train";
+import { createWheelsObserver } from "./engine/train";
+import Pizzicato from "pizzicato";
+
 
 const accelerateElement = document.getElementById("accelerate");
 const brakeElement = document.getElementById("brake");
@@ -23,8 +20,8 @@ accelerateElement.addEventListener("mouseup", () => accelerate$.next(false));
 brakeElement.addEventListener("mousedown", () => brake$.next(true));
 brakeElement.addEventListener("mouseup", () => brake$.next(false));
 
-const speed$ = createSpeed$(accelerate$, brake$).pipe(share());
-const distance$ = createDistance$(speed$).pipe(share());
+const speed$ = createSpeed$(accelerate$, brake$);
+const distance$ = createDistance$(speed$);
 
 speed$.subscribe(spd => {
   speedElement.innerText = Number(spd).toFixed(1);
@@ -34,6 +31,8 @@ distance$.subscribe(dst => {
   distanceElement.innerText = Number(dst).toFixed(3);
 });
 
-const wheels$ = createWheels$(d$ => createPath$(generateRandomPath(), d$), distance$);
+const wheels$ = createWheelsObserver(distance$);
 
-wheels$.subscribe(console.log);
+wheels$.subscribe(wheel => {
+  const wheel1 = new Pizzicato.Sound(require("./audio/wheel1.wav"), () => wheel1.play());
+});

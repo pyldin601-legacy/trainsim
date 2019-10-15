@@ -25,6 +25,7 @@
   "dependencies": {
     "lodash.flatten": "^4.4.0",
     "lodash.range": "^3.2.0",
+    "pizzicato": "^0.6.4",
     "rxjs": "^6.5.3"
   }
 }
