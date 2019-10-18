@@ -4,12 +4,13 @@ import {
   createDistance$,
   createSpeed$
 } from "./domain/engine";
-import { createWheelsObserver } from "./engine/train";
-import Pizzicato from "pizzicato";
-
+import { createWheelsStream } from "./engine/train";
+import { generateStaticRailwayStream } from "./engine/railway";
+import { playSoundOfWheels } from "./engine/sound";
 
 const accelerateElement = document.getElementById("accelerate");
 const brakeElement = document.getElementById("brake");
+const testElement = document.getElementById("test");
 
 const speedElement = document.getElementById("speed");
 const distanceElement = document.getElementById("distance");
@@ -31,8 +32,8 @@ distance$.subscribe(dst => {
   distanceElement.innerText = Number(dst).toFixed(3);
 });
 
-const wheels$ = createWheelsObserver(distance$);
+const railway$ = generateStaticRailwayStream();
 
-wheels$.subscribe(wheel => {
-  const wheel1 = new Pizzicato.Sound(require("./audio/wheel1.wav"), () => wheel1.play());
-});
+const wheels$ = createWheelsStream(railway$, distance$);
+
+playSoundOfWheels(wheels$);

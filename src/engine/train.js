@@ -3,8 +3,9 @@ import { map, mergeAll, mergeMap } from "rxjs/operators";
 import range from "lodash.range";
 import flatten from "lodash.flatten";
 import { createStaticPathObservable, generateRandomPath } from "./path";
+import { synchronizeWithDistance } from "./railway";
 
-export const CAIRO_AMOUNT = 2;
+export const CAIRO_AMOUNT = 1;
 export const CAIRO_LENGTH = 24.75;
 
 function calculateWheelsOffsets(offset) {
@@ -26,19 +27,24 @@ function calculateWheelsOffsets(offset) {
   return cairoPivots.map(it => (it + offset) / 1000);
 }
 
-export function createWheelsObserver(distance$) {
+export function createWheelsStream(railway$, distance$) {
   const wheelGroups = range(CAIRO_AMOUNT).map(cairo =>
     calculateWheelsOffsets(cairo * CAIRO_LENGTH)
   );
   const wheels = flatten(wheelGroups);
-  const wheelObservables = wheels.map(wheelOffset =>
-    createStaticPathObservable(
-      generateRandomPath(),
-      distance$.pipe(map(d => d + wheelOffset))
-    )
-  );
 
-  return of(wheelObservables).pipe(
+  const wheelsObservables = wheels.map((wheelOffset, i) => {
+    const distanceWithDelay$ = distance$.pipe(map(d => d + wheelOffset));
+    return railway$.pipe(
+      synchronizeWithDistance(distanceWithDelay$),
+      map(item => {
+        item["wheel"] = i;
+        return item;
+      })
+    );
+  });
+
+  return of(wheelsObservables).pipe(
     mergeMap(it => it),
     mergeAll()
   );
