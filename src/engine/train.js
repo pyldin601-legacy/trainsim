@@ -2,10 +2,9 @@ import { of } from "rxjs";
 import { map, mergeAll, mergeMap } from "rxjs/operators";
 import range from "lodash.range";
 import flatten from "lodash.flatten";
-import { createStaticPathObservable, generateRandomPath } from "./path";
 import { synchronizeWithDistance } from "./railway";
 
-export const CAIRO_AMOUNT = 3;
+export const CAIRO_AMOUNT = 4;
 export const CAIRO_LENGTH = 24.75;
 
 function calculateWheelsOffsets(offset) {
@@ -31,7 +30,7 @@ export function createWheelsStream(railway$, distance$) {
   const wheelGroups = range(CAIRO_AMOUNT).map(cairo =>
     calculateWheelsOffsets(cairo * CAIRO_LENGTH)
   );
-  const wheels = flatten(wheelGroups);
+  const wheels = flatten(wheelGroups).reverse();
 
   const wheelsObservables = wheels.map((wheelOffset, i) => {
     const distanceWithDelay$ = distance$.pipe(map(d => d + wheelOffset));

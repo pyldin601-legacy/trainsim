@@ -30,8 +30,6 @@ export function generateStaticRailwayStream() {
     railItems.push(createCoupling(i * RAIL1_LENGTH));
   }
 
-  railItems.push(createStop(100 * RAIL1_LENGTH));
-
   return createStaticRailway(railItems);
 }
 
