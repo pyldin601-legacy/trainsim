@@ -5,7 +5,7 @@ import flatten from "lodash.flatten";
 import { createStaticPathObservable, generateRandomPath } from "./path";
 import { synchronizeWithDistance } from "./railway";
 
-export const CAIRO_AMOUNT = 1;
+export const CAIRO_AMOUNT = 3;
 export const CAIRO_LENGTH = 24.75;
 
 function calculateWheelsOffsets(offset) {
