@@ -13,7 +13,7 @@ const sampler = new Tone.Sampler(
 
 export default function playPathwayObjects(pathwayObjects$) {
   pathwayObjects$.subscribe(railItem => {
-    const wheelNotes = {
+    const indexTones = {
       0: ["C4", 0.85],
       1: ["C4", 0.88],
       2: ["C4", 0.9],
@@ -24,7 +24,7 @@ export default function playPathwayObjects(pathwayObjects$) {
       7: ["C4", 0.01]
     };
 
-    const [note, velocity] = wheelNotes[railItem.index];
+    const [note, velocity] = indexTones[railItem.index];
 
     if (isLoaded) {
       sampler.triggerAttackRelease(note, 1, undefined, velocity);
