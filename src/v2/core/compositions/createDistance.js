@@ -1,7 +1,7 @@
 import { scan, withLatestFrom } from "rxjs/operators";
 
-export default function createDistance(speed$, frame$) {
-  return frame$.pipe(
+export default function createDistance(speed$, timeFrame$) {
+  return timeFrame$.pipe(
     withLatestFrom(speed$),
     scan((distance, [deltaTime, speed]) => {
       const speedPerSecond = speed / 3600;

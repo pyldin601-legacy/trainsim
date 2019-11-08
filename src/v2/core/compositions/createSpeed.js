@@ -1,8 +1,8 @@
 import { distinctUntilChanged, scan, withLatestFrom } from "rxjs/operators";
 import { ACCELERATE_SPEED, BRAKE_SPEED, MAX_SPEED } from "../constants";
 
-export function createSpeed(accelerate$, brake$, frame$) {
-  return frame$.pipe(
+export default function createSpeed(accelerate$, brake$, timeFrame$) {
+  return timeFrame$.pipe(
     withLatestFrom(accelerate$, brake$),
     scan((prevSpeed, [deltaTime, isAccelerating, isBraking]) => {
       if (isAccelerating) {
