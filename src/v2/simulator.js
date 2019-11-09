@@ -5,7 +5,7 @@ import createTimeFrame from "./core/compositions/createTimeFrame";
 import createSpeed from "./core/compositions/createSpeed";
 import createDistance from "./core/compositions/createDistance";
 import indexPathwayObjectsByWheels from "./core/train/indexPathwayObjectsByWheels";
-import generatePathwayObjects from "./core/pathway/generatePathway";
+import generatePathwayObjects from "./core/pathway/generatePathwayObjects";
 import playPathwayObjectsStream from "./core/sound/playPathwayObjectsStream";
 
 // Realtime Streams
